@@ -1,20 +1,21 @@
-﻿namespace FactorialApp
+﻿class Program
 {
-    public class Program
+    static void Main()
     {
-        public static void Main()
+        Console.WriteLine("Enter the number");
+        int n = int.Parse(Console.ReadLine());
+        long fact = Fact(n);
+        Console.WriteLine("factorial is {1}", n, fact);
+        Console.ReadKey();
+    }
+    static long Fact(int n)
+    {
+        int factorial = 1;
+        for (int i = 1; i <= n; i++)
         {
-            Console.Write("Enter a number: ");
-            int number = int.Parse(Console.ReadLine());
-
-            long factorial = CalculateFactorial(number);
-
-            Console.WriteLine($"The factorial of {number} is: {factorial}");
+            factorial *= i;
         }
+        return factorial;
 
-        public static long CalculateFactorial(int number)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
