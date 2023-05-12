@@ -1,36 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-class Program
+﻿using System.Diagnostics;
+namespace AsyncAwaitBasics
 {
-    static void Main(string[] args)
+    internal class Program
     {
-        List<int> numbers = new List<int> { 10, 15, 20, 25, 30, 35, 40, 45, 50 };
-        // Find all even numbers
-        var evenNumbers = numbers.Where(n => n % 2 == 0);
-        Console.WriteLine("Even numbers:");
-        foreach (var number in evenNumbers)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine(number);
+            int numberOfTasks = 2;
+            await PerformCalculations(numberOfTasks);
+            Console.WriteLine($"All {numberOfTasks} tasks completed in  milliseconds.");
         }
-        // Find all numbers greater than 20
-        int threshold = 20;
-        var greaterThanThreshold = numbers.Where(n => n > threshold);
-        Console.WriteLine("\nNumbers greater than 20:");
-        foreach (var number in greaterThanThreshold)
+        static async Task SimulateLongRunningTask(int delayInSeconds)
         {
-            Console.WriteLine(number);
+            await Task.Delay(delayInSeconds * 5000);
+            Console.WriteLine($" long-running task with {delayInSeconds} second delay completed.");
         }
-        // Calculate the sum of all numbers
-        int sum = numbers.Sum();
-        Console.WriteLine($"\nSum of all numbers: {sum}");
-        // Calculate the average of all numbers
-        double average = numbers.Average();
-        Console.WriteLine($"Average of all numbers: {average}");
-        // Find the minimum and maximum values
-        int min = numbers.Min();
-        int max = numbers.Max();
-        Console.WriteLine($"\nMinimum value: {min}");
-        Console.WriteLine($"Maximum value: {max}");
+        static async Task PerformCalculations(int numberOfTasks)
+        {
+            Task[] tasks = new Task[numberOfTasks];
+            for (int i = 0; i < numberOfTasks; i++)
+            {
+                int delay = i + 1; // increase delay for each task
+                tasks[i] = SimulateLongRunningTask(delay);
+            }
+            await Task.WhenAll(tasks);
+        }
     }
 }
